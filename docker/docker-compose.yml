@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  playwright-tests:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ../test-results:/app/test-results
+      - ../.env:/app/.env:ro
+    environment:
+      - BASE_URL=${BASE_URL:-https://example.com}
+      - HEADLESS=${HEADLESS:-true}
+      - BROWSER=${BROWSER:-chromium}
+    command: pytest tests/ -v --html=test-results/report.html --self-contained-html -n auto
